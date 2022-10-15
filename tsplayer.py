@@ -15,8 +15,6 @@ class TLDatabase(object):
     def list_all_records(self):
         db = sqlite3.connect(self.dbfilename)
         c = db.cursor()
-        #Поиск записей по диапазону дат
-        #c.execute('SELECT tl_id, user, tl_date, tl_time, hostname FROM tlrecords WHERE tl_date BETWEEN "12.09.2022" AND "12.09.2022"')
         c.execute('SELECT tl_id, user, tl_date, tl_time, hostname FROM tlrecords ORDER BY tl_date DESC, tl_time DESC')
         records = c.fetchall()
         c.close()

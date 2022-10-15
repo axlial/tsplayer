@@ -28,7 +28,7 @@ class TPDatabase():
 
     def create_records(self):
         j = journal.Reader()
-        j.add_match('_EXE=/usr/bin/tlog-rec-session')
+        j.add_match('SYSLOG_IDENTIFIER=-tlog-rec-session')
         #Инициализируем пустой список для хранения словарей
         tlog_messages = []
         #Инициализируем пустой список для хранения TLOG_REC
@@ -53,7 +53,7 @@ class TPDatabase():
             tlog_rec = list(dict.fromkeys(tlog_rec))
 
         #Сортируем список словарей по дате
-        tlog_messages = sorted(tlog_messages, key=itemgetter('date', 'hostname'))
+        #tlog_messages = sorted(tlog_messages, key=itemgetter('date', 'hostname'))
         #Возвращаем список словарей
         return tlog_messages
 
