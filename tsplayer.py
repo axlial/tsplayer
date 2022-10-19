@@ -125,6 +125,18 @@ class EditRecord(npyscreen.ActionForm):
         self_check = self.add(npyscreen.FixedText, value = "")
         self_check = self.add(npyscreen.FixedText, value = 'Для воспроизведения записи нажмите ОК', editable=False)
         self_check = self.add(npyscreen.FixedText, value = "Для возврата на главный экран нажмите Cancel", editable=False)
+        self_check = self.add(npyscreen.FixedText, value = "")
+        self_check = self.add(npyscreen.FixedText, value = "")
+        self_check = self.add(npyscreen.FixedText, value = "")
+        self_check = self.add(npyscreen.FixedText, value = "Воспроизведением можно управлять с помощью следующих клавиш:", editable=False)
+        self_check = self.add(npyscreen.FixedText, value = "")
+        self_check = self.add(npyscreen.FixedText, value = "SPACE, p - пауза/возобновление воспроизведение", editable=False)
+        self_check = self.add(npyscreen.FixedText, value = "} - увеличить вдвое скорость воспроизведения, максимум 16x", editable=False)
+        self_check = self.add(npyscreen.FixedText, value = "{ - уменьшить скорость воспроизведения, минимум 1/16x", editable=False)
+        self_check = self.add(npyscreen.FixedText, value = "BACKSPACE - сбросить скорость воспроизведения до нормальной 1x", editable=False)
+        self_check = self.add(npyscreen.FixedText, value = ". - пропустить паузу во время воспроизведения (пользователь авторизовался, но не производит никаких действий)", editable=False)
+        self_check = self.add(npyscreen.FixedText, value = "G - перемотка записи. 30G - перемотка на 30 секунд. 30:G - перемотка на 30 минут. 120:G - перемотка на 2 часа", editable=False)
+        heck = self.add(npyscreen.FixedText, value = "q - остановить воспроизведение и выйти", editable=False)
 
     def beforeEditing(self):
         record = self.parentApp.myDatabase.get_record(self.value)

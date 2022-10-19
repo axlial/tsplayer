@@ -25,7 +25,7 @@ class TPDatabase():
             )
         #Создаем таблицу для хранения отфильтрованных по датам записей    
         c.execute(
-        "CREATE TABLE tmprecords \
+        "CREATE TABLE IF NOT EXISTS tmprecords \
             ( tl_id INTEGER PRIMARY KEY, \
               rec     TEXT, \
               tl_date TEXT, \
