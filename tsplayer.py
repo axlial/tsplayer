@@ -20,20 +20,11 @@ class TLDatabase(object):
         c.close()
         return records
 
-    def list_search_records(self, start_date, end_date):
+    def list_search_records(self, start_date='', end_date=''):
         db = sqlite3.connect(self.dbfilename)
         c = db.cursor()
         #Поиск записей по диапазону дат
         c.execute('SELECT tl_id, user, tl_date, tl_time, hostname FROM tlrecords WHERE tl_date BETWEEN ? AND ?', (start_date, end_date))
-        records = c.fetchall()
-        c.close()
-        return records
-
-    def list_date_records(self):
-        db = sqlite3.connect(self.dbfilename)
-        c = db.cursor()
-        #Поиск записей по диапазону дат
-        c.execute('SELECT tl_id, user, tl_date, tl_time, hostname FROM tlrecords WHERE tl_date BETWEEN "12.09.2022" AND "12.09.2022"')
         records = c.fetchall()
         c.close()
         return records
@@ -107,20 +98,21 @@ class SearchListDisplay(npyscreen.FormMutt):
         self.wStatus1.value = "[ Воспроизведение терминальных сессий tlog ]"
         self.wStatus2.value = '[ ^S Установить фильтр ] [ ^R Сбросить фильтр ] [ ^Q Выход ]'
 
-        self.wMain.values = self.parentApp.myDatabase.list_date_records()
+        self.wMain.values = self.parentApp.myDatabase.list_all_records()
         self.wMain.display()
 
 class EditRecord(npyscreen.ActionForm):
     def create(self):
         self.value = None
-        self.wgrecid = self.add(npyscreen.TitleText, name = "RecID",)
-        self.wghostname = self.add(npyscreen.TitleText, name = "Hostname")
-        self.wguser = self.add(npyscreen.TitleText, name = "User")
-        self.wgdate = self.add(npyscreen.TitleText, name = "Date")
-        self.wgtime = self.add(npyscreen.TitleText, name = "Time")
+        self.wgrecid = self.add(npyscreen.TitleText, name = "RecID", editable=False)
+        self.wghostname = self.add(npyscreen.TitleText, name = "Hostname", editable=False)
+        self.wguser = self.add(npyscreen.TitleText, name = "User", editable=False)
+        self.wgdate = self.add(npyscreen.TitleText, name = "Date", editable=False)
+        self.wgtime = self.add(npyscreen.TitleText, name = "Time", editable=False)
         self.wgmessage = self.add(npyscreen.TitleText, name = "Message")
-        self_check = self.add(npyscreen.MultiLineEdit, value = """Для воспроизведения записи нажмите ОК\nДля возврата на главный экран нажмите Cancel\n""", 
-            max_height=5, rely=9)
+        self_check = self.add(npyscreen.FixedText, value = "")
+        self_check = self.add(npyscreen.FixedText, value = 'Для воспроизведения записи нажмите ОК', editable=False)
+        self_check = self.add(npyscreen.FixedText, value = "Для возврата на главный экран нажмите Cancel", editable=False)
 
     def beforeEditing(self):
         record = self.parentApp.myDatabase.get_record(self.value)
@@ -147,7 +139,7 @@ class SearchRecord(npyscreen.ActionForm):
         self.value = None
         self.wgstart_date = self.add(npyscreen.TitleText, name = "Дата начала:")
         self.wgend_date = self.add(npyscreen.TitleText, name = "Дата окончания:")
-        self_check = self.add(npyscreen.FixedText, value = "Формат даты DD.MM.YYYY")
+        self_check = self.add(npyscreen.FixedText, value = "Формат даты YYYY-MM-DD", editable=False)
 
     def beforeEditing(self):
         self.name = "Установка фильтра по дате"
@@ -155,9 +147,7 @@ class SearchRecord(npyscreen.ActionForm):
         self.wgend_date.value = ''
 
     def on_ok(self):
-        self.parentApp.myDatabase.list_search_records(self.wgstart_date.value,
-            self.wgend_date.value,
-            )
+        self.parentApp.myDatabase.list_search_records(start_date=self.wgstart_date.value, end_date=self.wgend_date.value)
         #Переходим в другую форму    
         self.parentApp.setNextForm("SLD")    
 

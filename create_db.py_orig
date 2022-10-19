@@ -28,7 +28,7 @@ class TPDatabase():
 
     def create_records(self):
         j = journal.Reader(path='/var/log/journal/remote/')
-        j.add_match('_COMM=tlog-rec-sessio')
+        j.add_match('SYSLOG_IDENTIFIER=-tlog-rec-session')
         #Инициализируем пустой список для хранения словарей
         tlog_messages = []
         #Инициализируем пустой список для хранения TLOG_REC
