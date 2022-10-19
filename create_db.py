@@ -23,6 +23,18 @@ class TPDatabase():
               hostname TEXT \
               )" \
             )
+        #Создаем таблицу для хранения отфильтрованных по датам записей    
+        c.execute(
+        "CREATE TABLE tmprecords \
+            ( tl_id INTEGER PRIMARY KEY, \
+              rec     TEXT, \
+              tl_date TEXT, \
+              tl_time TEXT, \
+              user   TEXT, \
+              message TEXT, \
+              hostname TEXT \
+              )" \
+            )
         db.commit()
         c.close()
 

@@ -20,11 +20,23 @@ class TLDatabase(object):
         c.close()
         return records
 
-    def list_search_records(self, start_date='', end_date=''):
+        
+    def create_sqltable(self, start_date, end_date):
+        #Метод используется для хранения отфильтрованных по дате записей
+        db = sqlite3.connect(self.dbfilename)
+        c = db.cursor()
+        #Очищаем таблицу от записей
+        c.execute("DELETE FROM tmprecords")
+        #Вставляем записи
+        c.execute('INSERT INTO tmprecords (tl_id, rec, tl_date, tl_time, user, message, hostname) SELECT tl_id, rec, tl_date, tl_time, user, message, hostname FROM tlrecords WHERE tl_date BETWEEN ? AND ?', (start_date, end_date))
+        db.commit()
+        c.close()
+        
+    def list_tmp_records(self):
         db = sqlite3.connect(self.dbfilename)
         c = db.cursor()
         #Поиск записей по диапазону дат
-        c.execute('SELECT tl_id, user, tl_date, tl_time, hostname FROM tlrecords WHERE tl_date BETWEEN ? AND ?', (start_date, end_date))
+        c.execute('SELECT tl_id, user, tl_date, tl_time, hostname FROM tmprecords ORDER BY tl_date DESC, tl_time DESC')
         records = c.fetchall()
         c.close()
         return records
@@ -98,7 +110,7 @@ class SearchListDisplay(npyscreen.FormMutt):
         self.wStatus1.value = "[ Воспроизведение терминальных сессий tlog ]"
         self.wStatus2.value = '[ ^S Установить фильтр ] [ ^R Сбросить фильтр ] [ ^Q Выход ]'
 
-        self.wMain.values = self.parentApp.myDatabase.list_all_records()
+        self.wMain.values = self.parentApp.myDatabase.list_tmp_records()
         self.wMain.display()
 
 class EditRecord(npyscreen.ActionForm):
@@ -147,7 +159,7 @@ class SearchRecord(npyscreen.ActionForm):
         self.wgend_date.value = ''
 
     def on_ok(self):
-        self.parentApp.myDatabase.list_search_records(start_date=self.wgstart_date.value, end_date=self.wgend_date.value)
+        self.parentApp.myDatabase.create_sqltable(start_date=self.wgstart_date.value, end_date=self.wgend_date.value)
         #Переходим в другую форму    
         self.parentApp.setNextForm("SLD")    
 
