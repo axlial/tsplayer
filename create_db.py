@@ -7,7 +7,7 @@ from operator import itemgetter
 
 class TPDatabase():
     '''Создает и наполняет базу данных записями терминальных сессий tlog'''
-    def __init__(self, filename="tldatabase.db"):
+    def __init__(self, filename="/var/db/tldatabase.db"):
         self.dbfilename = filename
         db = sqlite3.connect(self.dbfilename)
         c = db.cursor()

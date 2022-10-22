@@ -9,7 +9,7 @@ import subprocess
 
 class TLDatabase(object):
     '''Извлекает из базы данных записи терминальных сессий tlog'''
-    def __init__(self, filename="tldatabase.db"):
+    def __init__(self, filename="/var/db/tldatabase.db"):
         self.dbfilename = filename
 
     def list_all_records(self):
