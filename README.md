@@ -1,6 +1,6 @@
 ### Консольная утилита для воспроизведение терминальных сессий tlog, записываемых в Systemd Journal
 
-![tsplayer](image/tsplayer.png)
+![tsplayer](image/player.png)
 
 #### Использует два модуля:
 
