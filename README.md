@@ -12,7 +12,7 @@ tsplayer.py сам плеер, для работы с терминальными
 
 #### Опции для утилиты:
 
-![alt text](image/tsplayer.png) 
+![alt text](image/filter.png) 
 
 ```
 Ctrl+S - установить фильтр по диапазону дат
